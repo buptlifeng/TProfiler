@@ -12,8 +12,8 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 import com.taobao.profile.Manager;
@@ -51,7 +51,7 @@ public class ProfTransformer implements ClassFileTransformer {
 		try {
 			ClassReader reader = new ClassReader(classfileBuffer);
 			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-			ClassAdapter adapter = new ProfClassAdapter(writer, className);
+			ClassVisitor adapter = new ProfClassAdapter(writer, className);
 			reader.accept(adapter, 0);
 			// 生成新类字节码
 			return writer.toByteArray();
